@@ -62,6 +62,24 @@ public class MathController{
 		return convertToDouble(formattedResult);
 	}
 	
+	@RequestMapping(value = "/average/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	public Double average(@PathVariable(value = "numberOne") String numberOne , @PathVariable(value = "numberTwo") String numberTwo) throws Exception {
+		
+		if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			throw new UnsupportedMathOperationException("Please, set a numeric value!"); 
+		}
+		
+		Double result = (convertToDouble(numberOne) + convertToDouble(numberTwo)) / 2;
+		
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		symbols.setDecimalSeparator('.');
+		
+		DecimalFormat decimalFormat = new DecimalFormat("#.##", symbols);
+		String formattedResult = decimalFormat.format(result);
+		
+		return convertToDouble(formattedResult);
+	}
+	
 	private boolean isNumeric(String strNumber) {
 		if (strNumber == null) return false;
 		String number = strNumber.replaceAll(",", ".");
